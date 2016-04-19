@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_image"
+    tools:context="com.example.ioana.traveldiaryapp.activities.MainActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Make memories all over the world"
+        android:id="@+id/QuoteTxt"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:layout_marginTop="95dp"
+        android:layout_below="@+id/TripsBtn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trips"
+        android:id="@+id/TripsBtn"
+        android:textColor="@color/colorPrimaryDark"
+        android:background="@android:color/white"
+        android:layout_marginRight="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/AddBtn"
+        android:layout_marginTop="15dp"
+        android:width="70dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Trip"
+        android:id="@+id/AddBtn"
+        android:background="@android:color/white"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_above="@+id/QuoteTxt"
+        android:width="100dp" />
+
+
+</RelativeLayout>

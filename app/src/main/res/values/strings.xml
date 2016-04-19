@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Travel Diary</string>
+    <string name="trips">trips</string>
+
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+</resources>

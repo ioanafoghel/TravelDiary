@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/destinationImage"
+        android:src="@drawable/moscow_image"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/destinationLabelId"
+        android:text="Destination:"
+        android:focusable="false"
+        android:background="@android:color/transparent"
+        android:layout_above="@+id/addressTxtId"
+        android:layout_toEndOf="@+id/destinationImage"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/destinationImage" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addressLabelId"
+        android:text="Address:"
+        android:focusable="false"
+        android:background="@android:color/transparent"
+        android:layout_above="@+id/dateOfVisitTxtId"
+        android:layout_toRightOf="@+id/destinationImage"
+        android:layout_toEndOf="@+id/destinationImage" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateOfVisitLabelId"
+        android:text="Date of visit:"
+        android:focusable="false"
+        android:background="@android:color/transparent"
+        android:layout_alignBottom="@+id/destinationImage"
+        android:layout_toRightOf="@+id/destinationImage"
+        android:layout_toEndOf="@+id/destinationImage" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/descriptionLabelId"
+        android:layout_below="@+id/destinationImage"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="27dp"
+        android:text="Description:"
+        android:focusable="false"
+        android:background="@android:color/transparent"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/visitAgainLabelId"
+        android:text="Visit again:"
+        android:focusable="false"
+        android:layout_marginBottom="68dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/transparent"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioGroup"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:checkedButton="1"
+        android:layout_below="@+id/descriptionTxtId"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="yes"
+            android:id="@+id/yesCbx"
+            android:layout_below="@+id/radioGroup"
+            android:layout_alignRight="@+id/addressLabelId"
+            android:layout_alignEnd="@+id/addressLabelId"
+            android:checked="false" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="no"
+            android:id="@+id/noCbx"
+            android:layout_below="@+id/radioGroup"
+            android:layout_toLeftOf="@+id/SaveBtn"
+            android:layout_toStartOf="@+id/SaveBtn"
+            android:checked="false" />
+
+    </RadioGroup>
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/destinationTxtId"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/dateOfVisitLabelId"
+        android:layout_alignBottom="@+id/destinationLabelId"
+        android:layout_alignTop="@+id/destinationLabelId"
+        android:layout_toRightOf="@+id/dateOfVisitLabelId" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addressTxtId"
+        android:layout_alignBottom="@+id/addressLabelId"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/destinationTxtId"
+        android:layout_alignStart="@+id/destinationTxtId" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateOfVisitTxtId"
+        android:layout_alignBottom="@+id/dateOfVisitLabelId"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/destinationTxtId"
+        android:layout_alignStart="@+id/destinationTxtId" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/descriptionTxtId"
+        android:layout_below="@+id/descriptionLabelId"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/visitAgainLabelId" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/saveNoteBtnId"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@+id/radioGroup"
+        android:visibility="invisible" />
+
+
+</RelativeLayout>
