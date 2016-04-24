@@ -11,27 +11,18 @@
         android:id="@+id/destinationImage"
         android:src="@drawable/mini_moscow"/>
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemLabelId"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="54dp"
-        android:text="Description:"
+        android:id="@+id/destinationLabelId"
+        android:text="Destination:"
         android:background="@android:color/transparent"
+        android:textStyle="bold"
+        android:layout_marginLeft="75dp"
+        android:layout_marginStart="75dp"
+        android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/destinationImage"
-        android:layout_alignBottom="@+id/destinationImage" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/destinationTxtId"
-        android:layout_alignTop="@+id/itemLabelId"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/destinationImage"
-        android:layout_toRightOf="@+id/itemLabelId"
-        android:layout_toEndOf="@+id/itemLabelId" />
+        android:layout_marginTop="59dp" />
 
 
 </RelativeLayout>

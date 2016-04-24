@@ -4,5 +4,6 @@
 
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="DestinationLb">Destination:</string>
 
 </resources>

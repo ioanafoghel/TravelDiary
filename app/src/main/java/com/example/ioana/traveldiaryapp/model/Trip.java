@@ -1,26 +1,32 @@
 package com.example.ioana.traveldiaryapp.model;
 
-import android.widget.CheckBox;
-
-import java.util.Date;
+import java.util.Calendar;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Ioana on 15/04/2016.
  */
 public class Trip {
 
+    @SerializedName("Destination")
     private String destination;
+    @SerializedName("Address")
     private String address;
-    private Date dateOfVisit;
+    @SerializedName("Date_of_visit")
+    private String dateOfVisit;
+    @SerializedName("Description")
     private String description;
-    private CheckBox yesCbx;
-    private CheckBox noCbx;
-    private int destinationImg;
+    @SerializedName("Visit_again")
+    private Boolean yesCbx;
+    private Boolean noCbx;
+    @SerializedName("ImageDestination")
+    private String destinationImg;
+
 
     public Trip() {
     }
 
-    public Trip(int destinationImg, String destination, String address, Date dateOfVisit, String description, CheckBox yesCbx, CheckBox noCbx) {
+    public Trip(String destinationImg, String destination, String address, String dateOfVisit, String description, Boolean yesCbx, Boolean noCbx) {
         this.destinationImg = destinationImg;
         this.destination = destination;
         this.address = address;
@@ -52,10 +58,10 @@ public class Trip {
         return trip;
     }
 
-    public int getDestinationImg(){
+    public String getDestinationImg(){
         return  destinationImg;
     }
-    public void setDestinationImg(int destinationImg){
+    public void setDestinationImg(String destinationImg){
         this.destinationImg = destinationImg;
     }
     public String getDestination() {
@@ -70,10 +76,10 @@ public class Trip {
     public void setAddress(String address) {
         this.address = address;
     }
-    public Date getDateOfVisit(){
+    public String getDateOfVisit(){
         return dateOfVisit;
     }
-    public void setDateOfVisit(Date dateOfVisit) {
+    public void setDateOfVisit(String dateOfVisit) {
         this.dateOfVisit = dateOfVisit;
     }
     public String getDescription(){
@@ -82,10 +88,10 @@ public class Trip {
     public void setDescription(String description){
         this.description=description;
     }
-    public CheckBox getYesCbx(){return yesCbx;}
-    public void setYesCbx(CheckBox yesCbx){this.yesCbx=yesCbx;}
-    public CheckBox getNoCbx(){return  noCbx;}
-    public void setNoCbx(CheckBox noCbx){this.noCbx=noCbx;}
+    public Boolean getYesCbx(){return yesCbx;}
+    public void setYesCbx(Boolean yesCbx){this.yesCbx=yesCbx;}
+    public Boolean getNoCbx(){return  noCbx;}
+    public void setNoCbx(Boolean noCbx){this.noCbx=noCbx;}
 
 
     @Override

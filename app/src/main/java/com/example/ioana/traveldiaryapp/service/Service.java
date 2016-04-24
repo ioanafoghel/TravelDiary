@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -20,16 +21,22 @@ import java.util.Date;
  */
 public class Service {
 
+    public static boolean loadedJsonData;
+
     public static ArrayList<Trip> getTrips()
     {
         return Storage.getInstance().getTrips();
     }
 
-    public static Trip createTrip(int destinationImg, String destination, String address, Date dateOfVisit, String description, CheckBox yesCbx, CheckBox noCbx)
+    public static Trip createTrip(String destinationImg, String destination, String address, String dateOfVisit, String description, Boolean yesCbx, Boolean noCbx)
     {
         Trip trip = new Trip(destinationImg, destination, address, dateOfVisit, description, yesCbx, noCbx);
         Storage.getInstance().addTrip(trip);
         return trip;
+    }
+
+    public static void addTripList(ArrayList<Trip> trips){
+       Storage.getInstance().addTripList(trips);
     }
 
     public static void deleteTrip(Trip trip)
@@ -37,7 +44,7 @@ public class Service {
         Storage.getInstance().removeTrip(trip);
     }
 
-    public static void updateTrip(Trip trip, int destinationImg, String destination, String address, Date dateOfVisit, String description, CheckBox yesCbx, CheckBox noCbx)
+    public static void updateTrip(Trip trip, String destinationImg, String destination, String address, String dateOfVisit, String description, Boolean yesCbx, Boolean noCbx)
     {
         trip.setDestinationImg(destinationImg);
         trip.setDestination(destination);
@@ -48,36 +55,7 @@ public class Service {
         trip.setNoCbx(noCbx);
     }
 
-
-    /** Read the object from Base64 string. */
-    public static Object toObject(String base64){
-        byte[] data = Base64.decode(base64, Base64.DEFAULT);
-        Object object = null;
-        try {
-            ObjectInputStream ois = new ObjectInputStream(
-                    new ByteArrayInputStream(data ));
-            object = ois.readObject();
-            ois.close();
-            System.out.println("### Product lists loaded from memory ###");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return object;
-    }
-
-    /** Write the object to a Base64 string. */
-    public static String toString(Serializable object){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            ObjectOutputStream oos = new ObjectOutputStream( baos );
-            oos.writeObject(object);
-            oos.close();
-            System.out.println("##### Object saved: " + object);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new String( Base64.encode(baos.toByteArray(),Base64.DEFAULT));
+    public static Trip getTripByIndex(int index){
+        return Storage.getInstance().getTripByIndex(index);
     }
 }
