@@ -3,17 +3,26 @@ package com.example.ioana.traveldiaryapp.storage;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.CheckBox;
 
 import com.example.ioana.traveldiaryapp.R;
 import com.example.ioana.traveldiaryapp.activities.TripsActivity;
 import com.example.ioana.traveldiaryapp.model.Trip;
+import com.example.ioana.traveldiaryapp.service.Service;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,7 +44,6 @@ public class Storage {
     public static Storage getInstance() {
         if (uniqueInstance == null) {
             uniqueInstance = new Storage();
-           // uniqueInstance.createSomeObjects();
         }
         return uniqueInstance;
     }
@@ -53,26 +61,6 @@ public class Storage {
         for (Trip trip: t){
             trips.add(trip);
         }}
-    }
-
-    public void removeTrip(Trip trip) {
-        trips.remove(trip);
-    }
-
-    public void updateTrip(Trip trip, String destinationImg, String destination, String address, String dateOfVisit, String description, Boolean yesCbx, Boolean noCbx) {
-        trip.setDestinationImg(destinationImg);
-        trip.setDestination(destination);
-        trip.setAddress(address);
-        trip.setDateOfVisit(dateOfVisit);
-        trip.setDescription(description);
-        trip.setYesCbx(yesCbx);
-        trip.setNoCbx(noCbx);
-    }
-
-    public Trip createTrip(String destinationImg, String destination, String address, String dateOfVisit, String description, Boolean yesCbx, Boolean noCbx) {
-        Trip trip = new Trip(destinationImg, destination, address, dateOfVisit, description, yesCbx, noCbx);
-        uniqueInstance.addTrip(trip);
-        return trip;
     }
 
    /* public void createSomeObjects() {
@@ -119,4 +107,7 @@ public class Storage {
         public Trip getTripByIndex(int index){
             return trips.get(index);
         }
-}
+
+
+    }
+

@@ -5,5 +5,10 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="DestinationLb">Destination:</string>
+    <string name="save">save</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="searchCountry">enter country</string>
 
 </resources>

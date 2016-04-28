@@ -5,17 +5,15 @@
     android:id="@+id/TripItemId"
     android:weightSum="1">
     <ImageView
-
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/destinationImage"
-        android:src="@drawable/mini_moscow"/>
+        android:contentDescription="Picture from a travel" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/destinationLabelId"
-        android:text="Destination:"
         android:background="@android:color/transparent"
         android:textStyle="bold"
         android:layout_marginLeft="75dp"

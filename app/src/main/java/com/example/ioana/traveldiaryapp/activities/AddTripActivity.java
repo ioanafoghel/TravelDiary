@@ -14,7 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -45,47 +48,37 @@ import java.util.Locale;
  */
 public class AddTripActivity extends Activity {
 
-    ImageView imageLoadImage;
-    TextView destination, address, visitDate, description, visitAgain;
-    RadioButton yesCbx, noCbx;
-    EditText dateText;
-
-    // Replace it with Date.util
-    int visit_year, visit_month, visit_day;
-
     private static final int DIALOG_ID = 0;
     private static int RESULT_LOAD_IMAGE = 1;
-    final Context context = this;
+
+    ImageView imageLoadImage;
+    TextView destination, address, description, visitAgain;
+    RadioButton yesCbx, noCbx;
+    EditText dateText;
     Button SaveBtn;
 
+    int visit_year, visit_month, visit_day;
+    Bitmap pickedPicture;
+    final Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_note_activity);
 
-        Log.d("Number of trips", Service.getTrips().size() + "");
-
         destination = (TextView) findViewById(R.id.destinationTxtId);
         address = (TextView) findViewById(R.id.addressTxtId);
-        visitDate = (TextView) findViewById(R.id.dateOfVisitTxtId);
+        dateText = (EditText) findViewById(R.id.dateOfVisitTxtId);
         description = (TextView) findViewById(R.id.descriptionTxtId);
         visitAgain = (TextView) findViewById(R.id.visitAgainLabelId);
         yesCbx = (RadioButton) findViewById(R.id.yesCbx);
         noCbx = (RadioButton) findViewById(R.id.noCbx);
-
         SaveBtn = (Button) findViewById(R.id.SaveBtn);
 
-        addListenerOnButton();
-
-
-        // Replace this with a Date.util
         final Calendar calendar = Calendar.getInstance();
         visit_year = calendar.get(Calendar.YEAR);
         visit_month = calendar.get(Calendar.MONTH);
         visit_day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        showDialogOnTxtClick();
 
         imageLoadImage = (ImageView) findViewById(R.id.destinationImage);
         imageLoadImage.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +91,33 @@ public class AddTripActivity extends Activity {
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
+
+        SaveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d("Number of trips", Service.getTrips().size() + "");
+                String bitmapToString = Service.getStringFromBitmap(pickedPicture);
+                Service.createTrip(bitmapToString, destination.getText().toString(), address.getText().toString(), dateText.getText().toString(), description.getText().toString(), yesCbx.isChecked(), noCbx.isChecked());
+                Gson gson = new Gson();
+
+                String serializedOutput = gson.toJson(Service.getTrips());
+                WriteJsonToFile(serializedOutput);
+                Intent intent = new Intent(context, TripsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        dateText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(MotionEvent.ACTION_UP == event.getAction()) {
+                    showDialog(DIALOG_ID);
+                }
+                return true;
+            }
+        });
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -114,17 +134,13 @@ public class AddTripActivity extends Activity {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
-
-            ImageView imageView = (ImageView) findViewById(R.id.destinationImage);
-
-            Bitmap bmp = null;
+            pickedPicture = null;
             try {
-                bmp = getBitmapFromUri(selectedImage);
+                pickedPicture = getBitmapFromUri(selectedImage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            imageView.setImageBitmap(bmp);
-
+            imageLoadImage.setImageBitmap(pickedPicture);
         }
     }
 
@@ -136,18 +152,6 @@ public class AddTripActivity extends Activity {
         Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
         parcelFileDescriptor.close();
         return image;
-    }
-
-    public void showDialogOnTxtClick() {
-        dateText = (EditText) findViewById(R.id.dateOfVisitTxtId);
-        dateText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showDialog(DIALOG_ID);
-                    }
-                }
-        );
     }
 
     protected Dialog onCreateDialog(int id) {
@@ -163,7 +167,8 @@ public class AddTripActivity extends Activity {
             visit_year = year;
             visit_month = monthOfYear + 1;
             visit_day = dayOfMonth;
-            dateText.setText(visit_day + "-" + visit_month + "-" + visit_year);
+            String dateOfVisit= visit_day + "-" + visit_month + "-" + visit_year;
+            dateText.setText(dateOfVisit);
             Toast.makeText(AddTripActivity.this, "Date of visit: " + visit_year + "-" + visit_month + "-" + visit_day, Toast.LENGTH_LONG).show();
         }
     };
@@ -171,40 +176,19 @@ public class AddTripActivity extends Activity {
 // Replace this with a map button and a simple EditText!!!!!
 
     public void process(View view) {
-        Intent intent = null, chooser = null;
         if (view.getId() == R.id.addressTxtId) {
-            intent = new Intent(Intent.ACTION_VIEW);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("geo:19.076,72.8777"));
-            chooser = Intent.createChooser(intent, "Launch Map");
+            Intent chooser = Intent.createChooser(intent, "Launch Map");
             startActivity(chooser);
         }
     }
 
-    public void addListenerOnButton() {
-        final Context context = this;
-        SaveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.d("Number of trips", Service.getTrips().size() + "");
-                Service.createTrip("", destination.getText().toString(), address.getText().toString(), dateText.toString(), description.getText().toString(), yesCbx.isChecked(), noCbx.isChecked());
-                Gson gson = new Gson();
-
-                String serializedOutput = gson.toJson(Service.getTrips());
-                WriteJsonToFile(serializedOutput);
-                Intent intent = new Intent(context, TripsActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
     private void WriteJsonToFile(String json) {
-
-        File file = new File(context.getFilesDir(), "jsonData.txt");
-        String filename = "jsonData.txt";
+        new File(context.getFilesDir(), Service.JSON_FILE_NAME);
         FileOutputStream outputStream;
         try {
-            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream = openFileOutput(Service.JSON_FILE_NAME, Context.MODE_PRIVATE);
             outputStream.write(json.getBytes());
             outputStream.close();
             Log.d("Wrote to file","yes");
@@ -212,5 +196,23 @@ public class AddTripActivity extends Activity {
             Log.d("Wrote to file","no");
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        Gson gson = new Gson();
+        String json = gson.toJson(Service.getTrips());
+        new File(context.getFilesDir(), Service.JSON_FILE_NAME);
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput(Service.JSON_FILE_NAME, Context.MODE_PRIVATE);
+            outputStream.write(json.getBytes());
+            outputStream.close();
+            Log.d("Wrote to file","yes");
+        } catch (Exception e) {
+            Log.d("Wrote to file","no");
+            e.printStackTrace();
+        }
+        super.onStop();
     }
 }

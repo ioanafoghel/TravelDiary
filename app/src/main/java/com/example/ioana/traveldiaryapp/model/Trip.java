@@ -1,5 +1,7 @@
 package com.example.ioana.traveldiaryapp.model;
 
+import android.graphics.Bitmap;
+
 import java.util.Calendar;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,7 +21,7 @@ public class Trip {
     @SerializedName("Visit_again")
     private Boolean yesCbx;
     private Boolean noCbx;
-    @SerializedName("ImageDestination")
+    @SerializedName("ImageDestination") // encoded to String Bitmap image
     private String destinationImg;
 
 

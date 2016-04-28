@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ioana.traveldiaryapp">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -24,8 +25,11 @@
         <activity
             android:label="@string/trips"
             android:name=".activities.TripsActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme">
-
+            <meta-data
+                android:name="android.support.MainActivity"
+                android:value="com.example.ioana.traveldiaryapp.activities.MainActivity" />
         </activity>
 
         <activity
@@ -39,11 +43,6 @@
             android:name=".activities.TravelNoteActivity"
             android:theme="@style/AppTheme">
         </activity>
-
-
-        <meta-data
-            android:name="android.support.MainActivity"
-            android:value="com.example.ioana.productlist.activities.MainActivity" />
 
     </application>
 

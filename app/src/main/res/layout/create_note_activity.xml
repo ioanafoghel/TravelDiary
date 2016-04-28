@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/dateOfVisitLabelId"
         android:text="Date of visit:"
-        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:background="@android:color/transparent"
         android:layout_alignBottom="@+id/destinationImage"
         android:layout_toRightOf="@+id/destinationImage"
