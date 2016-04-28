@@ -3,7 +3,9 @@ package com.example.ioana.traveldiaryapp.service;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.CheckBox;
@@ -51,34 +53,5 @@ public class Service {
     public static Trip getTripByIndex(int index){
         return Storage.getInstance().getTripByIndex(index);
     }
-
-    // converts Bitmap picture to a string which can be saved to json
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-    public static String getStringFromBitmap(Bitmap bitmapPicture) {
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmapPicture.compress(Bitmap.CompressFormat.JPEG,50, baos);
-        byte [] b=baos.toByteArray();
-        String temp="";
-        try{
-            System.gc();
-            temp=Base64.encodeToString(b, Base64.DEFAULT);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return temp;
-    }
-
-    // converts String to Bitmap
-    public static Bitmap getBitmapFromString(String jsonString) {
-        BitmapFactory.Options opt= new BitmapFactory.Options();
-        opt.inTempStorage = new byte[16 * 1024];
-        opt.inSampleSize = 16;
-        byte[] encodeByte = Base64.decode(jsonString, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length,opt);
-        return bitmap;
-    }
-
-
-
 
 }

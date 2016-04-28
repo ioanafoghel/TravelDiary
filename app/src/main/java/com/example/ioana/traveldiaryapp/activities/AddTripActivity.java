@@ -59,6 +59,7 @@ public class AddTripActivity extends Activity {
 
     int visit_year, visit_month, visit_day;
     Bitmap pickedPicture;
+    Uri pickedPictureUri;
     final Context context = this;
 
     @Override
@@ -95,10 +96,7 @@ public class AddTripActivity extends Activity {
         SaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.d("Number of trips", Service.getTrips().size() + "");
-                String bitmapToString = Service.getStringFromBitmap(pickedPicture);
-                Service.createTrip(bitmapToString, destination.getText().toString(), address.getText().toString(), dateText.getText().toString(), description.getText().toString(), yesCbx.isChecked(), noCbx.isChecked());
+                Service.createTrip(pickedPictureUri.toString(), destination.getText().toString(), address.getText().toString(), dateText.getText().toString(), description.getText().toString(), yesCbx.isChecked(), noCbx.isChecked());
                 Gson gson = new Gson();
 
                 String serializedOutput = gson.toJson(Service.getTrips());
@@ -124,10 +122,10 @@ public class AddTripActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
+            pickedPictureUri = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            Cursor cursor = getContentResolver().query(selectedImage,
+            Cursor cursor = getContentResolver().query(pickedPictureUri,
                     filePathColumn, null, null, null);
             cursor.moveToFirst();
 
@@ -136,7 +134,7 @@ public class AddTripActivity extends Activity {
             cursor.close();
             pickedPicture = null;
             try {
-                pickedPicture = getBitmapFromUri(selectedImage);
+                pickedPicture = getBitmapFromUri(pickedPictureUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -149,7 +147,9 @@ public class AddTripActivity extends Activity {
         ParcelFileDescriptor parcelFileDescriptor =
                 getContentResolver().openFileDescriptor(uri, "r");
         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 16;
+        Bitmap image =BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
         parcelFileDescriptor.close();
         return image;
     }

@@ -56,6 +56,7 @@ public class TravelNoteActivity extends AppCompatActivity {
     RadioButton yesCbx, noCbx;
     int tripIndex;
     Trip trip;
+    Uri pickedPictureUri;
     final Context context = this;
 
     public void onCreate(final Bundle savedInstanceState) {
@@ -78,7 +79,13 @@ public class TravelNoteActivity extends AppCompatActivity {
         if (extras != null) {
             tripIndex = extras.getInt("TripItemIndex");
             trip = Service.getTripByIndex(tripIndex);
-            Bitmap image = Service.getBitmapFromString(trip.getDestinationImg());
+            Uri uri = Uri.parse(trip.getDestinationImg());
+            Bitmap image= null;
+            try {
+                image = getBitmapFromUri(uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             destinationImage.setImageBitmap(image);
             destination.setText(trip.getDestination());
             address.setText(trip.getAddress());
@@ -208,9 +215,7 @@ public class TravelNoteActivity extends AppCompatActivity {
     }
 
     private void saveChangesMadeToTrip(){
-        Bitmap bitmap = ((BitmapDrawable)destinationImage.getDrawable()).getBitmap();
-        String bitmapToString = Service.getStringFromBitmap(bitmap);
-        trip.setDestinationImg(bitmapToString);
+        trip.setDestinationImg(pickedPictureUri.toString());
         trip.setDestination(destination.getText().toString());
         trip.setAddress(address.getText().toString());
         trip.setDateOfVisit(dateOfVisit.getText().toString());
@@ -222,10 +227,10 @@ public class TravelNoteActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
+            Uri pickedPictureUri = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            Cursor cursor = getContentResolver().query(selectedImage,
+            Cursor cursor = getContentResolver().query(pickedPictureUri,
                     filePathColumn, null, null, null);
             cursor.moveToFirst();
 
@@ -237,7 +242,7 @@ public class TravelNoteActivity extends AppCompatActivity {
 
             Bitmap bmp = null;
             try {
-                bmp = getBitmapFromUri(selectedImage);
+                bmp = getBitmapFromUri(pickedPictureUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -251,7 +256,9 @@ public class TravelNoteActivity extends AppCompatActivity {
         ParcelFileDescriptor parcelFileDescriptor =
                 getContentResolver().openFileDescriptor(uri, "r");
         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 16;
+        Bitmap image =BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
         parcelFileDescriptor.close();
         return image;
     }

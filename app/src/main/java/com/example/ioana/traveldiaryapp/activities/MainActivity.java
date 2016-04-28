@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Wrote to file","no");
             e.printStackTrace();
         }
-        System.out.println("### Trips saved to memorie ###");
         super.onStop();
     }
 }
